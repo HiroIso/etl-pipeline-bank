@@ -1,13 +1,14 @@
-# ETL pipeline for GDP data
-
-This is a practice project from IBM Data Engineering Professional Certificate course. I have created a complete ETL pipeline for accessing data from a website and processing it to meet the requirements. 
+# ETL pipeline for the World's Largest Banks
 
 ### Project Scenario:
+This is a project to develop an ETL (Extract, Transform, Load) pipeline geared towards compiling a list of the top 10 largest banks globally, ranked by market capitalization in billion USD. Additionally, it aims to transform and store this data into GBP, EUR, and INR currencies, leveraging exchange rate information available in CSV format. The processed data will be stored both locally as a CSV file and within a database table.
 
-This project is to create an automated script that can extract the list of all countries in order of their GDPs in billion USDs (rounded to 2 decimal places), as logged by the International Monetary Fund (IMF). Since IMF releases this evaluation twice a year, this code will be used by the organization to extract the information as it is updated.
+The goal is to establish an automated system capable of generating this vital information reliably, enabling to execute the process seamlessly every financial quarter to produce the requisite report.
 
-**GDP data source source URL**:
-https://web.archive.org/web/20230902185326/https://en.wikipedia.org/wiki/List_of_countries_by_GDP_%28nominal%29
+
+
+**Data source URL**:
+https://web.archive.org/web/20230908091635%20/https://en.wikipedia.org/wiki/List_of_largest_banks
 
 
 To installed all required packages 
