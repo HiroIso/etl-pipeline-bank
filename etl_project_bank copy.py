@@ -34,6 +34,10 @@ def extract(url, table_attribs):
     # Then extract all the rows of the index 2 table using the 'tr attribute.
     tables = data.find_all('tbody')
     rows = tables[2].find_all('tr')
+    
+    for row in rows:
+        col = row.find_all('td')
+        print(f"TAG: {col} \n")
 
     # Check the contents of each row, having attribute 'td', for the following conditions.
     #  a. The row should not be empty.
@@ -41,17 +45,18 @@ def extract(url, table_attribs):
     #  c. The third column should not be '—'.
     # Then Store all entries matching the conditions a dictionary with keys the same as entries of table_attribs. 
     # Append all these dictionaries one by one to the dataframe.
-    for row in rows:
-        col = row.find_all('td')
-        if len(col)!=0:
-            if col[0].find('a') is not None and '—' not in col[2]:
-                data_dict = {"Country": col[0].a.contents[0],
-                             "GDP_USD_millions": col[2].contents[0]}
-                df1 = pd.DataFrame(data_dict, index=[0])
-                df = pd.concat([df,df1], ignore_index=True)
+    # for row in rows:
+    #     col = row.find_all('td')
+    #     if len(col)!=0:
+    #         if col[0].find('a') is not None and '—' not in col[2]:
+    #             data_dict = {"Country": col[0].a.contents[0],
+    #                          "GDP_USD_millions": col[2].contents[0]}
+    #             df1 = pd.DataFrame(data_dict, index=[0])
+    #             df = pd.concat([df,df1], ignore_index=True)
+    # print(col[0].a)
+    # return df
 
-    return df
-
+extract(url, table_attribs)
 
 # ------ 2. Transform information ------
 def transform(df):
@@ -148,4 +153,4 @@ def etl_pipeline_gdp():
     log_progress("-")
 
 
-etl_pipeline_gdp()
+# etl_pipeline_gdp()
