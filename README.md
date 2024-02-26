@@ -17,11 +17,17 @@ To installed all required packages
 pip install -r requirements.txt
 ```
 
+Run the command in the shell to download exchange_rate.csv file
+```
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv
+```
+
+
 Run the following command to execute the pipeline:
 
 
 ```
-python3 etl_project_gdp.py
+python3 banks_project.py
 ```
 
 
