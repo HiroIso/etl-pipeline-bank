@@ -51,6 +51,7 @@ def extract(url, table_attribs):
     tables = data.find_all('tbody')
     rows = tables[0].find_all('tr')
 
+    # Solution 1
     # for row in rows:
     #     cols = row.find_all('td')
     #     for col in cols:
@@ -64,6 +65,7 @@ def extract(url, table_attribs):
     
     # df['MC_USD_Billion'] = df['MC_USD_Billion'].astype(float)
 
+    # Solution 2
     for row in rows:
         if row.find('td') is not None:
             col = row.find_all('td')
@@ -73,9 +75,6 @@ def extract(url, table_attribs):
                             "MC_USD_Billion": float(market_cap)}
             df1 = pd. DataFrame(data_dict, index=[0])
             df = pd.concat([df,df1], ignore_index=True)
-    print(df)
-
-    return df
 
     return df
 
