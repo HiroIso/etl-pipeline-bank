@@ -6,16 +6,20 @@ import sqlite3
 import numpy as np
 from datetime import datetime
 
+# Set display options to show all rows and columns
+pd.set_option('display.max_rows', None)  # Show all rows
+pd.set_option('display.max_columns', None)  # Show all columns
+
 
 # Initialize variables
 
 url = 'https://web.archive.org/web/20230908091635%20/https://en.wikipedia.org/wiki/List_of_largest_banks'
-rate_csv_path = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv'
+csv_path = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv'
 table_attribs = ['Name', 'MC_USD_Billion']
 table_attribs_add = ['MC_GBP_Billion', 'MC_EUR_Billion', 'MC_INR_Billion']
-output_path = './Largest_banks_data.csv'
+output_path = 'Largest_banks_data.csv'
 db_name = 'Banks.db'
-table_name = 'Largest_banks'
+table_name = './Largest_banks'
 log_file = 'code_log.txt'
 
 
@@ -60,7 +64,7 @@ def extract(url, table_attribs):
                     df['MC_USD_Billion'] = df['MC_USD_Billion'].str.replace('\n', '')
     
     df['MC_USD_Billion'] = df['MC_USD_Billion'].astype(float)
-    print(df)
+
     return df
 
 
@@ -78,16 +82,12 @@ def transform(df, csv_path):
             rate_list = line.split(',')
             rate_list[1] = float(rate_list[1])
             exchange_rate[rate_list[0]] = rate_list[1]
-    # print(exchange_rate)
-    print(f"Currency rate data type: {type(exchange_rate['GBP'])}")
-    # print(df.info())
 
     # Add 3 another currency columns and scaled by the corresponding echange rate factor (round with 2 decimal places).
     df['MC_GBP_Billion'] = [np.round(x*exchange_rate['GBP'],2) for x in df['MC_USD_Billion']]
     df['MC_EUR_Billion'] = [np.round(x*exchange_rate['EUR'],2) for x in df['MC_USD_Billion']]
     df['MC_INR_Billion'] = [np.round(x*exchange_rate['INR'],2) for x in df['MC_USD_Billion']]
 
-    print(df)
     return df
 
 
@@ -109,28 +109,33 @@ def run_query(query_statement, sql_connection):
 functions in the correct order to complete the project. Note that this
 portion is not inside any function.'''
 
-
+# Declaring known values
 # log_progress('Preliminaries complete. Initiating ETL process')
 
+# Call extract() function
 df = extract(url, table_attribs)
 # log_progress('Data extraction complete. Initiating Transformation process')
 
+# Call transform() function
 df = transform(df, csv_path)
 # print(df)
 # print(f"The 5th largest bank in billion EUR: {df['MC_EUR_Billion'][4]}") #value for the finalquiz
 # log_progress('Data transformation complete. Initiating Loading process')
 
+# Call load_to_csv()
 load_to_csv(df, output_path)
-log_progress('Data saved to CSV file')
+# log_progress('Data saved to CSV file')
 
+# Initiate SQLite3 connection
+# log_progress('SQL Connection initiated')
 
-log_progress('SQL Connection initiated')
+# Call load_to_db()
+# log_progress('Data loaded to Database as a table, Executing queries')
 
+# Call run_query()
+# log_progress('Process Complete')
 
-log_progress('Data loaded to Database as a table, Executing queries')
-
-log_progress('Process Complete')
-
-log_progress('Server Connection closed')
+# Close SQLite3 connection
+# log_progress('Server Connection closed')
              
 
