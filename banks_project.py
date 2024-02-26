@@ -100,6 +100,8 @@ def load_to_csv(df, output_path):
 def load_to_db(df, sql_connection, table_name):
     ''' This function saves the final data frame to a database
     table with the provided name. Function returns nothing.'''
+    df.to_sql(table_name, sql_connection, if_exists='replace', index=False)
+
 
 def run_query(query_statement, sql_connection):
     ''' This function runs the query on the database table and
@@ -127,9 +129,11 @@ load_to_csv(df, output_path)
 # log_progress('Data saved to CSV file')
 
 # Initiate SQLite3 connection
+sql_connection = sqlite3.connect(db_name)
 # log_progress('SQL Connection initiated')
 
 # Call load_to_db()
+load_to_db(df, sql_connection, table_name)
 # log_progress('Data loaded to Database as a table, Executing queries')
 
 # Call run_query()
