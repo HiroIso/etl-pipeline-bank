@@ -51,18 +51,31 @@ def extract(url, table_attribs):
     tables = data.find_all('tbody')
     rows = tables[0].find_all('tr')
 
-    for row in rows:
-        cols = row.find_all('td')
-        for col in cols:
-            a_tags = col.find_all('a')
-            if len(cols) and len(a_tags) != 0:
-                    data_dict = {'Name': a_tags[1].contents[0],
-                                'MC_USD_Billion': cols[2].contents[0]}
-                    df1 = pd.DataFrame(data_dict, index=[0])
-                    df = pd.concat([df, df1], ignore_index=True)
-                    df['MC_USD_Billion'] = df['MC_USD_Billion'].str.replace('\n', '')
+    # for row in rows:
+    #     cols = row.find_all('td')
+    #     for col in cols:
+    #         a_tags = col.find_all('a')
+    #         if len(cols) and len(a_tags) != 0:
+    #                 data_dict = {'Name': a_tags[1].contents[0],
+    #                             'MC_USD_Billion': cols[2].contents[0]}
+    #                 df1 = pd.DataFrame(data_dict, index=[0])
+    #                 df = pd.concat([df, df1], ignore_index=True)
+    #                 df['MC_USD_Billion'] = df['MC_USD_Billion'].str.replace('\n', '')
     
-    df['MC_USD_Billion'] = df['MC_USD_Billion'].astype(float)
+    # df['MC_USD_Billion'] = df['MC_USD_Billion'].astype(float)
+
+    for row in rows:
+        if row.find('td') is not None:
+            col = row.find_all('td')
+            bank_name = col[1].find_all('a')[1]['title']
+            market_cap = col[2].contents[0][:-1]
+            data_dict = {"Name": bank_name,
+                            "MC_USD_Billion": float(market_cap)}
+            df1 = pd. DataFrame(data_dict, index=[0])
+            df = pd.concat([df,df1], ignore_index=True)
+    print(df)
+
+    return df
 
     return df
 
