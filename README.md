@@ -33,21 +33,25 @@ python3 banks_project.py
 
 The ETL pipeline detail:
 
-1. **Extracting information**: 
-Using the web scraping process to extract information from the specified web page. 
+1. **Logging function**:
+It will be called multiple times throughout the execution of the pipeline and will add a log entry in "code_log.txt.
 
-2. **Transform information**:
-It modifies the values in million USDs to billion USDs (rounded to 2 decimal places) as required.
+2. **Extracting information**: 
+Using the web scraping process to extract information from [the specified web page](https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks) and save it to a dataframe. 
 
-3. **Loading information**:
-It saves the transformed dataframe to "Countries_by_GDP.csv" file and the transformed dataframe as a table in the database "World_Economies.db".
 
-4. **Querying the database table**:
+3. **Transform information**:
+Transform the dataframe by adding columns for Market Capitalization in GBP, EUR and INR, rounded to 2 decimal places, based on the exchange rate information in the **exchange_rate.csv** file.
+
+4. **Loading information**:
+It saves the transformed dataframe to **Largest_banks_data.csv** file.
+
+5. **Loading to Database**:
+It saves the transformed dataframe to an SQL database server as a table
+
+6. **Querying the database table**:
 It runs the query statement on the table and retrieve the output as a filtered dataframe. This dataframe will be printed.
 
-5. **Logging progress**:
-It will be called multiple times throughout the execution of this code and will add a log entry in "etl_project_log.txt" file.
-
-6. **Execution function**:
-It execute all the functions to process the pipeline.
+7. **Execution**:
+It execute all the functions to process the pipeline and the log entries will be stored at all stages.
 
