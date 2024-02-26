@@ -16,7 +16,6 @@ pd.set_option('display.max_columns', None)  # Show all columns
 url = 'https://web.archive.org/web/20230908091635%20/https://en.wikipedia.org/wiki/List_of_largest_banks'
 csv_path = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv'
 table_attribs = ['Name', 'MC_USD_Billion']
-table_attribs_add = ['MC_GBP_Billion', 'MC_EUR_Billion', 'MC_INR_Billion']
 output_path = './Largest_banks_data.csv'
 db_name = 'Banks.db'
 table_name = 'Largest_banks'
@@ -115,29 +114,35 @@ functions in the correct order to complete the project. Note that this
 portion is not inside any function.'''
 
 # Declaring known values
-# log_progress('Preliminaries complete. Initiating ETL process')
+log_progress('Preliminaries complete. Initiating ETL process')
+
 
 # Call extract() function
 df = extract(url, table_attribs)
-# log_progress('Data extraction complete. Initiating Transformation process')
+log_progress('Data extraction complete. Initiating Transformation process')
+
 
 # Call transform() function
 df = transform(df, csv_path)
 # print(df)
 # print(f"The 5th largest bank in billion EUR: {df['MC_EUR_Billion'][4]}") #value for the finalquiz
-# log_progress('Data transformation complete. Initiating Loading process')
+log_progress('Data transformation complete. Initiating Loading process')
+
 
 # Call load_to_csv()
 load_to_csv(df, output_path)
-# log_progress('Data saved to CSV file')
+log_progress('Data saved to CSV file')
+
 
 # Initiate SQLite3 connection
 sql_connection = sqlite3.connect(db_name)
-# log_progress('SQL Connection initiated')
+log_progress('SQL Connection initiated')
+
 
 # Call load_to_db()
 load_to_db(df, sql_connection, table_name)
-# log_progress('Data loaded to Database as a table, Executing queries')
+log_progress('Data loaded to Database as a table, Executing queries')
+
 
 # Call run_query()
 # 1. Print the contents of the entire table
@@ -152,10 +157,11 @@ run_query(query_statement2, sql_connection)
 query_statement3 = f"SELECT Name FROM Largest_banks LIMIT 5"
 run_query(query_statement3, sql_connection)
 
-# log_progress('Process Complete')
+log_progress('Process Complete')
 
 
 # Close SQLite3 connection
-# log_progress('Server Connection closed')
+sql_connection.close()
+log_progress('Server Connection closed')
              
 
