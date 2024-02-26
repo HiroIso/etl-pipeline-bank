@@ -17,9 +17,9 @@ url = 'https://web.archive.org/web/20230908091635%20/https://en.wikipedia.org/wi
 csv_path = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv'
 table_attribs = ['Name', 'MC_USD_Billion']
 table_attribs_add = ['MC_GBP_Billion', 'MC_EUR_Billion', 'MC_INR_Billion']
-output_path = 'Largest_banks_data.csv'
+output_path = './Largest_banks_data.csv'
 db_name = 'Banks.db'
-table_name = './Largest_banks'
+table_name = 'Largest_banks'
 log_file = 'code_log.txt'
 
 
@@ -106,6 +106,9 @@ def load_to_db(df, sql_connection, table_name):
 def run_query(query_statement, sql_connection):
     ''' This function runs the query on the database table and
     prints the output on the terminal. Function returns nothing. '''
+    print(query_statement)
+    query_output  = pd.read_sql(query_statement, sql_connection)
+    print(query_output)
 
 ''' Here, you define the required entities and call the relevant
 functions in the correct order to complete the project. Note that this
@@ -137,7 +140,20 @@ load_to_db(df, sql_connection, table_name)
 # log_progress('Data loaded to Database as a table, Executing queries')
 
 # Call run_query()
+# 1. Print the contents of the entire table
+query_statement1 = f"SELECT * FROM Largest_banks"
+run_query(query_statement1, sql_connection)
+
+# 2. Print the average market capitalization of all the banks in Billion USD.
+query_statement2 = f"SELECT AVG(MC_GBP_Billion) FROM Largest_banks"
+run_query(query_statement2, sql_connection)
+
+# 3. Print only the names of the top 5 banks
+query_statement3 = f"SELECT Name FROM Largest_banks LIMIT 5"
+run_query(query_statement3, sql_connection)
+
 # log_progress('Process Complete')
+
 
 # Close SQLite3 connection
 # log_progress('Server Connection closed')
