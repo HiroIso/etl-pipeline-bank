@@ -50,29 +50,13 @@ def extract(url, table_attribs):
     # Extarct all attributes
     tables = data.find_all('tbody')
     rows = tables[0].find_all('tr')
-
-    # Solution 1
-    # for row in rows:
-    #     cols = row.find_all('td')
-    #     for col in cols:
-    #         a_tags = col.find_all('a')
-    #         if len(cols) and len(a_tags) != 0:
-    #                 data_dict = {'Name': a_tags[1].contents[0],
-    #                             'MC_USD_Billion': cols[2].contents[0]}
-    #                 df1 = pd.DataFrame(data_dict, index=[0])
-    #                 df = pd.concat([df, df1], ignore_index=True)
-    #                 df['MC_USD_Billion'] = df['MC_USD_Billion'].str.replace('\n', '')
-    
-    # df['MC_USD_Billion'] = df['MC_USD_Billion'].astype(float)
-
-    # Solution 2
     for row in rows:
         if row.find('td') is not None:
             col = row.find_all('td')
             bank_name = col[1].find_all('a')[1]['title']
             market_cap = col[2].contents[0][:-1]
             data_dict = {"Name": bank_name,
-                            "MC_USD_Billion": float(market_cap)}
+                         "MC_USD_Billion": float(market_cap)}
             df1 = pd. DataFrame(data_dict, index=[0])
             df = pd.concat([df,df1], ignore_index=True)
 
@@ -86,13 +70,8 @@ def transform(df, csv_path):
     respective currencies'''
 
     # Create a dictionaly from exchange_rate.csv file
-    with open('exchange_rate.csv', 'r') as f:
-        next(f)
-        exchange_rate = {}
-        for line in f:
-            rate_list = line.split(',')
-            rate_list[1] = float(rate_list[1])
-            exchange_rate[rate_list[0]] = rate_list[1]
+    exchange_rate = pd.read_csv(csv_path)
+    exchange_rate = exchange_rate.set_index('Currency').to_dict()['Rate']
 
     # Add 3 another currency columns and scaled by the corresponding echange rate factor (round with 2 decimal places).
     df['MC_GBP_Billion'] = [np.round(x*exchange_rate['GBP'],2) for x in df['MC_USD_Billion']]
@@ -136,8 +115,6 @@ log_progress('Data extraction complete. Initiating Transformation process')
 
 # Call transform() function
 df = transform(df, csv_path)
-# print(df)
-# print(f"The 5th largest bank in billion EUR: {df['MC_EUR_Billion'][4]}") #value for the finalquiz
 log_progress('Data transformation complete. Initiating Loading process')
 
 
